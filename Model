@@ -1,0 +1,47 @@
+from google.colab import drive
+drive.mount('/content/drive')
+#data Augmentaion Object
+from keras.preprocessing.image import ImageDataGenerator
+img_gen = ImageDataGenerator(rotation_range=30,width_shift_range=.1,height_shift_range=0.1,
+                             rescale=1/255,shear_range=0.01,zoom_range=.1,horizontal_flip=True,fill_mode='nearest')
+from keras.models import Sequential
+from keras.layers import Activation,Dropout,Flatten,Conv2D,MaxPool2D,Dense
+#Layer constructions
+input_shape=(400,400,3)
+model=Sequential()
+# CONVOLUTIONAL LAYER
+model.add(Conv2D(filters=32,kernel_size=(4,4),input_shape=input_shape,activation='relu'))
+# POOLLING LSYER
+model.add(MaxPool2D(pool_size=(2,2)))
+
+# CONVOLUTIONAL LAYER
+model.add(Conv2D(filters=64,kernel_size=(4,4),activation='relu'))
+# POOLLING LSYER
+model.add(MaxPool2D(pool_size=(2,2)))
+# CONVOLUTIONAL LAYER
+model.add(Conv2D(filters=128,kernel_size=(4,4),activation='relu'))
+# POOLLING LSYER
+model.add(MaxPool2D(pool_size=(2,2)))
+
+model.add(Flatten())
+model.add(Dense(128,activation='relu'))
+model.add(Dropout(0.2))
+#last layer
+model.add(Dense(1))
+model.add(Activation('sigmoid'))
+model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
+model.summary()
+
+batch_size=16
+train_img_gen=img_gen.flow_from_directory('/content/drive/MyDrive/Colab Notebooks/data/train',target_size=input_shape[:2],batch_size=batch_size
+                                          ,class_mode='binary')
+test_img_gen=img_gen.flow_from_directory('/content/drive/MyDrive/Colab Notebooks/data/test',target_size=input_shape[:2],batch_size=batch_size
+                                          ,class_mode='binary')
+                                          
+results = model.fit_generator(train_img_gen,epochs=25,steps_per_epoch=210,verbose=1,validation_data=test_img_gen,validation_steps=5)
+#ploting loss
+plt.plot(results.history['loss'],label='loss')
+plt.plot(results.history['val_loss'],label='test_loss')
+plt.legend()
+#Saving model
+model.save('/content/drive/MyDrive/Colab Notebooks/second_face_mask_detection_model.h5')
