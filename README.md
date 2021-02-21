@@ -19,3 +19,15 @@ you can see the result:
 
 
 
+# Resourses
+
+you can find the model from below links:
+1) for embedded use:  https://drive.google.com/file/d/1dLWbPVYO3F9p--aQMjUqwgc1xd7S3hTK/view?usp=sharing
+
+
+2) for more powerful GPU:  https://drive.google.com/file/d/1-0CPoOzowFErwCa_h0sEG50Vs6wu1kvm/view?usp=sharing
+
+trained Model code :  https://colab.research.google.com/drive/1s4exU5H-haZIpb4gqYJKPPAXP915I91p?usp=sharing
+
+
+
